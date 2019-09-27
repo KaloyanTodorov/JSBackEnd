@@ -8,8 +8,6 @@ module.exports = (req, res) => {
 
     if(pathname === '/' && req.method === 'GET') {
 
-        // TODO: Implement the logic for showing the home html view
-
         let filePath = path.normalize(
             path.join(__dirname, '../views/home/index.html')
         );
