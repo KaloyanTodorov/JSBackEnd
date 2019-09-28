@@ -96,7 +96,9 @@ module.exports = (req, res) => {
         })
 
     } else if(pathname === '/cats/add-breed' && req.method === 'POST') {
+        
         let formData = '';
+        const dataFile = './data/breeds.json';
 
         req.on('data', (data) => {
             formData += data;
@@ -106,7 +108,7 @@ module.exports = (req, res) => {
 
             let body = qs.parse(formData);
 
-            fs.readFile('./data/breeds.json', (err, data) => {
+            fs.readFile(dataFile, (err, data) => {
                 
                 if(err) {
                     throw err;
@@ -118,7 +120,7 @@ module.exports = (req, res) => {
 
                 let json = JSON.stringify(breeds);
                 
-                fs.writeFile('./data/breeds.json', json, 'utf-8', () => console.log('The breed was added successfully!'));
+                fs.writeFile(dataFile, json, 'utf-8', () => console.log('The breed was added successfully!'));
             });
 
             // TODO: Update redirecting to home page

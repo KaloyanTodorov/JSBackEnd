@@ -39,29 +39,53 @@ module.exports = (req, res) => {
 
     if(pathname.startsWith('/content') && req.method === 'GET') {
 
-        fs.readFile(`./${pathname}`, 'utf-8', (err, data) => {
-            if(err) {
-                console.log(err);
-
+        if((pathname.endsWith('png') || pathname.endsWith('jpg') ||pathname.endsWith('jpeg') ||pathname.endsWith('ico') ) && req.method === 'GET') {
+            fs.readFile(`./${pathname}`, (err, data) => {
+                if(err) {
+                    console.log(err);
+    
+                    res.writeHead(
+                        404, 
+                        { 'Content-Type': 'text/plain' });
+    
+                    res.write("Error was found");
+                    res.end();
+                    return;
+                }
+                
                 res.writeHead(
-                    404, 
-                    { 'Content-Type': 'text/plain' });
-
-                res.write("Error was found");
+                    200,
+                    { 'Content-Type': getContentType(pathname) }
+                    );
+    
+                res.write(data);
                 res.end();
-                return;
-            }
-
-            console.log(pathname);
+            })
+        } else {
             
-            res.writeHead(
-                200,
-                { 'Content-Type': getContentType(pathname) }
-                );
+            fs.readFile(`./${pathname}`, 'utf-8', (err, data) => {
+                if(err) {
+                    console.log(err);
+    
+                    res.writeHead(
+                        404, 
+                        { 'Content-Type': 'text/plain' });
+    
+                    res.write("Error was found");
+                    res.end();
+                    return;
+                }
+                
+                res.writeHead(
+                    200,
+                    { 'Content-Type': getContentType(pathname) }
+                    );
+    
+                res.write(data);
+                res.end();
+            })
+        }
 
-            res.write(data);
-            res.end();
-        })
     } else {
         return true;
     }

@@ -1,6 +1,6 @@
 {
   "name": "cat-shelter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NodeJS Workshop",
   "main": "index.js",
   "scripts": {
