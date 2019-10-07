@@ -1,5 +1,5 @@
 const express = require('express');
-const users = require('./data/users.json');
+let users = require('./data/users.json');
 
 const router = express.Router();
 
@@ -23,5 +23,16 @@ router.get('/user', getCurrentUsers, auth, (req, res) => {
 router.get('/user/:id', getCurrentUsers, auth, (req, res) => {
     res.send(users.find(u => u.id === +req.params.id));
 });
+
+router.delete('/user/:id', (req, res) => {
+    const { id } = req.params;
+    debugger;
+    users = users.filter( user => users.id === id);
+
+    res.redirect('/');
+    // res.send(users);
+});
+
+
 
 module.exports = router;

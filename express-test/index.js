@@ -1,12 +1,17 @@
 const express = require('express');
-const port = 8080;
-const api = require('./api');
 const handlebars = require('express-handlebars');
+const methodOverride = require('method-override');
+
+const api = require('./api');
 const users = require('./data/users.json');
+
+const port = 8080;
+
 
 const app = express();
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
+app.use(methodOverride('_method'));
 
 
 app.engine('.hbs', handlebars({
@@ -29,9 +34,9 @@ app.use('/api', api);
 
 app.get('/', defaultHandler);
 
-// app.listen(port, () => {
-//     console.log(`Server is listening on port ${port}`);
-// });
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
+});
 
 
 // Error handling
