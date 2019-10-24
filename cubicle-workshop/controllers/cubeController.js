@@ -1,15 +1,16 @@
-const cubeModel = require("../models/cube");
+const models = require("../models");
 
 function showIndex(req, res, next) {
-    cubeModel.getAll().then(cubes => {
-        res.render('index.hbs', { cubes });
-    }).catch(next);
+    models.cube.find()
+        .then(cubes => {
+            res.render('index.hbs', { cubes });
+        }).catch(next);
 }
 
 function details(req, res, next) {
     const id = req.params.id;
     
-    cubeModel.getOne(id).then(cube => {
+    models.cube.getOne(id).then(cube => {
         if(!cube) {
             res.redirect('/not-found');
             return; 
@@ -19,9 +20,10 @@ function details(req, res, next) {
     }).catch(next);
 }
 
-function create(req, res) {
+function createGet(req, res) {
     const { name, description, imageUrl, difficultyLevel } = req.body;
-    const newCube = cubeModel.create(name, description, imageUrl, difficultyLevel);
+    const newCube = models.cube.create(name, description, imageUrl, difficultyLevel);
+    
 }
 
 function notFound (req, res) {

@@ -1,10 +1,12 @@
 // TODO: Require Controllers...
-const cubeController = require('../controllers/cubeController');
+const controllers = require('../controllers');
 
 module.exports = (app) => {
-    app.get('/details/:id', cubeController.details);
+    app.get('/details/:id', controllers.cube.details);
 
-    app.get('/not-found', cubeController.notFound);
-
-    app.get('/', cubeController.showIndex);
+    app.get('/about', controllers.cube.about);
+    
+    app.get('/', controllers.cube.showIndex);
+    
+    app.get('*', controllers.cube.notFound);
 };
