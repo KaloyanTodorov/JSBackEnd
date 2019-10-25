@@ -1,8 +1,5 @@
 const models = require("../models");
 
-
-    
-
 module.exports = {
     
     get: {
@@ -13,16 +10,17 @@ module.exports = {
                 }).catch(next);
         },
         details: function (req, res, next) {
-            const id = req.params.id;
+            const { id } = req.params;
             
-            models.cube.getOne(id).then(cube => {
-                if(!cube) {
-                    res.redirect('/not-found');
-                    return; 
-                }
-        
-                res.render('details.hbs', { cube });
-            }).catch(next);
+            models.cube.findById({_id: id}).populate('accessories')
+                .then(cube => {
+                    if(!cube) {
+                        res.redirect('/not-found');
+                        return; 
+                    }
+            
+                    res.render('details.hbs', { cube });
+                }).catch(next);
         },
         about: function (req, res) {
             res.render("about.hbs");
@@ -31,13 +29,17 @@ module.exports = {
         res.render("404.hbs");
         },
         create: function (req, res) {
-            res.render('create.hbs');
+            res.render('createCube.hbs');
         }
     },
     post: {
-
+        create: function(req, res, next) {
+            const { name = null, description = null, imageUrl = null, difficultyLevel = null } = req.body;
+            models.cube.create({name, description, imageUrl, difficultyLevel})
+                .then(cube => {
+                    res.redirect('/');
+                })
+                .catch(next);
+        }
     }
 }
-
-// const { name, description, imageUrl, difficultyLevel } = req.body;
-//             const newCube = models.cube.create(name, description, imageUrl, difficultyLevel);
